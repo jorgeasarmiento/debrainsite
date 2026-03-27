@@ -835,6 +835,127 @@
     color: rgba(255,255,255,0.3);
     text-transform: uppercase;
   }
+
+  /* SERVICES SECTION */
+  .services-section {
+    padding: 120px 48px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  /* PROCESS STEP siblings get left padding on desktop */
+  .process-step + .process-step { padding-left: 40px; }
+
+  /* HAMBURGER */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 200;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--white);
+    transition: all 0.3s ease;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+  .mobile-menu a {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--cyan); }
+  .mobile-menu .mobile-cta {
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+    padding: 14px 36px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 20px 24px; }
+    .nav-links, .nav-cta-desktop { display: none; }
+    .nav-hamburger { display: flex; }
+
+    /* Hero */
+    .e-symbol-wrap { width: 220px; height: 220px; margin-bottom: 24px; }
+    .ring-1 { width: 220px; height: 220px; }
+    .ring-2 { width: 180px; height: 180px; }
+    .ring-3 { width: 140px; height: 140px; }
+    .e-glyph { font-size: 100px; }
+    .hero-sub { padding: 0 24px; }
+    .hero-actions { flex-direction: column; align-items: center; gap: 12px; }
+    .btn-primary, .btn-secondary { width: 240px; text-align: center; }
+
+    /* Services */
+    .services-section { padding: 80px 24px; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+
+    /* Manifesto */
+    .manifesto { padding: 60px 24px; }
+    .manifesto-inner { grid-template-columns: 1fr; gap: 36px; }
+    .manifesto-e { display: none; }
+
+    /* Work */
+    .work-section { padding: 80px 24px; }
+    .work-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .section-title { margin-bottom: 0; }
+    .work-grid { grid-template-columns: 1fr; }
+    .work-card:first-child { grid-row: span 1; aspect-ratio: 16/10; }
+
+    /* Process */
+    .process-section { padding: 80px 24px; }
+    .process-steps { grid-template-columns: 1fr; }
+    .process-step { padding: 32px 0 !important; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .process-step:last-child { border-bottom: none; }
+    .process-step + .process-step { padding-left: 0; }
+
+    /* CTA */
+    .cta-section { padding: 100px 24px; }
+
+    /* Footer */
+    footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .hero-tagline { font-size: 9px; letter-spacing: 0.2em; }
+  }
 </style>
 </head>
 <body>
@@ -850,8 +971,21 @@
     <li><a href="#">Projects</a></li>
     <li><a href="#">Products</a></li>
   </ul>
-  <a class="nav-cta" href="#">Let's talk</a>
+  <a class="nav-cta nav-cta-desktop" href="#">Let's talk</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#" onclick="closeMobileMenu()">About</a></li>
+    <li><a href="#" onclick="closeMobileMenu()">Projects</a></li>
+    <li><a href="#" onclick="closeMobileMenu()">Products</a></li>
+    <li><a href="#" class="mobile-cta" onclick="closeMobileMenu()">Let's talk</a></li>
+  </ul>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -910,7 +1044,7 @@
 </div>
 
 <!-- SERVICES -->
-<section style="padding: 120px 48px; max-width:1300px; margin: 0 auto;">
+<section class="services-section">
   <p class="section-label">What we do</p>
   <h2 class="section-title">Everything is<br>an interaction.</h2>
   <div class="services-grid">
@@ -1011,17 +1145,17 @@
         <div class="step-name">Discovery</div>
         <div class="step-desc">We dive deep to understand your brand and how to reach the right audiences.</div>
       </div>
-      <div class="process-step" style="padding-left:40px;">
+      <div class="process-step">
         <div class="step-num">02</div>
         <div class="step-name">Design</div>
         <div class="step-desc">Tailored communications built for every platform, every person.</div>
       </div>
-      <div class="process-step" style="padding-left:40px;">
+      <div class="process-step">
         <div class="step-num">03</div>
         <div class="step-name">Development</div>
         <div class="step-desc">Smart resources applied where it matters — built fast, without fluff.</div>
       </div>
-      <div class="process-step" style="padding-left:40px; border-right:none;">
+      <div class="process-step" style="border-right:none;">
         <div class="step-num">04</div>
         <div class="step-name">Deploy</div>
         <div class="step-desc">We launch and adapt alongside you. You can relax. We've got your back.</div>
@@ -1092,6 +1226,20 @@
     p.style.animationDuration = (Math.random() * 15 + 10) + 's';
     p.style.animationDelay = (Math.random() * 10) + 's';
     particleContainer.appendChild(p);
+  }
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
   }
 
   // Scroll-triggered fade-ins
